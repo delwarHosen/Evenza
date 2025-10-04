@@ -3,31 +3,31 @@ import mongoose, { Schema } from "mongoose"
 
 const schema = new Schema({
     name: {
-        require: true,
+        required: true,
         type: String
     },
     details: {
-        require: true,
+        required: true,
         type: String
     },
     location: {
-        require: true,
+        required: true,
         type: String
     },
     imageUrl: {
-        require: true,
+        required: true,
         type: String
     },
     interested_ids: {
-        require: false,
+        required: false,
         type: Array
     },
     going_ids: {
-        require: false,
+        required: false,
         type: Array
     },
     swags: {
-        require: false,
+        required: false,
         type: Array
     },
 })
