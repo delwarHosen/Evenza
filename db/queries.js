@@ -1,6 +1,7 @@
 // import { evenModel } from "@/models/event-models";
 
 import { Event } from "@/models/event-models";
+import { userModel } from "@/models/users-models";
 import { replaceMongoInArray, replaceMongoInObject } from "@/utils/data-utils";
 
 
@@ -16,4 +17,16 @@ async function getEventById(eventId) {
     return replaceMongoInObject(event)
 }
 
-export { getAllEvent, getEventById }
+async function createUser(user) {
+    return await userModel.create(user);
+}
+
+async function foundUserByCredentials(credentials) {
+    const user = await userModel.findOne(credentials).lean();
+    if (user) {
+        return replaceMongoInObject(user);
+    }
+    return null;
+}
+
+export { getAllEvent, getEventById, createUser, foundUserByCredentials }
