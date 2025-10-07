@@ -1,20 +1,24 @@
-// import { evenModel } from "@/models/event-models";
-
 import { Event } from "@/models/event-models";
 import { userModel } from "@/models/users-models";
 import { replaceMongoInArray, replaceMongoInObject } from "@/utils/data-utils";
 import mongoose from "mongoose";
 
 
-async function getAllEvent(params) {
-    const allEvents = await Event.find().lean();
+async function getAllEvent(query) {
+    let allEvents = [];
+    if (query) {
+        const regex = new RegExp(query, "i");
+        allEvents = await Event.find({ name: { $regex: regex } }).lean();
+    } else {
+        allEvents = await Event.find().lean();
+    }
+
     return replaceMongoInArray(allEvents);
-    // return allEvents
+
 }
 
 async function getEventById(eventId) {
     const event = await Event.findById(eventId).lean();
-
     return replaceMongoInObject(event)
 }
 
@@ -46,4 +50,11 @@ async function updateInterested(eventId, authId) {
     event.save();
 }
 
-export { getAllEvent, getEventById, createUser, foundUserByCredentials, updateInterested }
+
+async function updateGoing(eventId, authId) {
+    const event = await Event.findById(eventId);
+    event.going_ids.push(new mongoose.Types.ObjectId(authId));
+    event.save();
+}
+
+export { getAllEvent, getEventById, createUser, foundUserByCredentials, updateInterested, updateGoing }

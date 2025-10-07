@@ -6,12 +6,14 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 
-const ActionButtons = ({ eventId, interestedUserId, fromDetails }) => {
+const ActionButtons = ({ eventId, interestedUserId, goingUserIds, fromDetails }) => {
   const { auth } = useAuth();
   const router = useRouter();
-  const interested = interestedUserId.find(id => id === auth?.id);
+  const interested = interestedUserId?.find(id => id === auth?.id);
+  const isGoing = goingUserIds?.find(id => id === auth?.id);
 
-  const [isInterested, setInInterested] = useState(interested)
+  const [isInterested, setInInterested] = useState(interested);
+  const [going, setGoing] = useState(isGoing);
   const [isPending, startTransition] = useTransition();
 
   async function toggleInterestedEvent() {
@@ -23,9 +25,9 @@ const ActionButtons = ({ eventId, interestedUserId, fromDetails }) => {
     }
   }
 
-  const goingBulk = () => {
+  const markGoing = () => {
     if (auth) {
-      router.push("/payment")
+      router.push(`/payment/${eventId}`)
     } else {
       router.push("/login")
     }
@@ -39,7 +41,8 @@ const ActionButtons = ({ eventId, interestedUserId, fromDetails }) => {
         Interested
       </button>
       <button
-        onClick={goingBulk}
+      disabled={auth && going}
+        onClick={markGoing}
         href="/payment"
         className=" text-center w-full bg-[#464849] py-2 px-2 rounded-md border border-[#5F5F5F]/50 shadow-sm cursor-pointer hover:bg-[#3C3D3D] transition-colors active:translate-y-1"
       >
