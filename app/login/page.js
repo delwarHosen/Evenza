@@ -9,7 +9,7 @@ export default function LoginPage() {
                 <h4 className="font-bold text-2xl">Sign in</h4>
                 <LoginForm />
                 <span className="text-center text-xs text-gray-500">
-                    Don't have an account?
+                   Don&apos;t have an account?
                     <Link href="/register" className="underline hover:text-indigo-500 mx-1">
                         Register
                     </Link>
